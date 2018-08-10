@@ -1,7 +1,7 @@
 {
   "name": "hubot-stm32",
   "description": "A hubot script that links documentation for STM32 microcontrollers",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "kongr45gpen <electrovesta@gmail.com>",
   "license": "MIT",
 
@@ -9,11 +9,11 @@
 
   "repository": {
     "type": "git",
-    "url": "git://github.com/hubot-scripts/hubot-stm32.git"
+    "url": "git://github.com/kongr45gpen/hubot-stm32.git"
   },
 
   "bugs": {
-    "url": "https://github.com/hubot-scripts/hubot-stm32/issues"
+    "url": "https://github.com/kongr45gpen/hubot-stm32/issues"
   },
 
   "dependencies": {
