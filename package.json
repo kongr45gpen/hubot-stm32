@@ -9,11 +9,11 @@
 
   "repository": {
     "type": "git",
-    "url": "git://github.com/hubot-scripts/hubot-stm32.git"
+    "url": "git://github.com/kongr45gpen/hubot-stm32.git"
   },
 
   "bugs": {
-    "url": "https://github.com/hubot-scripts/hubot-stm32/issues"
+    "url": "https://github.com/kongr45gpen/hubot-stm32/issues"
   },
 
   "dependencies": {
