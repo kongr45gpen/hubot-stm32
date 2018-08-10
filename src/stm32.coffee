@@ -1,22 +1,70 @@
-# Description
-#   A hubot script that links documentation for STM32 microcontrollers
+# Description:
+#   Allows instant searching for datasheets and reference manuals of the STM product line
+#
+# Dependencies:
+#   None
 #
 # Configuration:
-#   LIST_OF_ENV_VARS_TO_SET
+#   None
 #
 # Commands:
-#   hubot hello - <what the respond trigger does>
-#   orly - <what the hear trigger does>
+#   hubot datasheet <mcu> - Link to the datasheet of an STM32 microcontroller
+#   hubot reference <mcu> - Link to the reference manual of an STM32 microcontroller
+#
+# Examples:
+#   hubot datasheet stm32f103rb
+#   hubot reference l432
 #
 # Notes:
-#   <optional notes required for the script>
+#   All trademarks belong to their respective owners. 'STM32' is a registered trademark
+#   of STMicroelectronics International N.V.
 #
 # Author:
-#   kongr45gpen <electrovesta@gmail.com>
+#   kongr45gpen
 
 module.exports = (robot) ->
-  robot.respond /hello/, (res) ->
-    res.reply "hello!"
 
-  robot.hear /orly/, (res) ->
-    res.send "yarly"
+  robot.respond /(datasheet|reference) (.*)/i, (res) ->
+    documentType = res.match[1]
+    wantedMcu = res.match[2].toLowerCase().replace /^\s+|\s+$/g, "" # trim/strip
+    res.reply "Searching..."
+
+    robot.http("http://stmcufinder.com/API/getMCUsForMCUFinderPC.php")
+        .header('Accept', 'application/json')
+        .get() (err, response, body) ->
+            if response.statusCode isnt 200 or err
+                res.send "Unable to request. #{err}"
+
+            data = JSON.parse body
+            robot.logger.debug "Received #{data.MCUs.length} microcontrollers"
+
+            mcu = null
+            while mcu is null
+                robot.logger.debug "Searching for MCU #{wantedMcu}..."
+                for myMcu in data.MCUs.reverse()
+                    if myMcu.name.toLowerCase().search(wantedMcu) >= 0
+                        # MCU found!
+                        robot.logger.debug "MCU found successfully. Match: #{myMcu.name.toLowerCase()} ~= #{wantedMcu}", myMcu.name.toLowerCase().search(wantedMcu)
+                        mcu = myMcu
+                        break
+                # If we still haven't found the MCU, cut off the name and search again
+                wantedMcu = wantedMcu.slice(0, -1)
+            if mcu
+                robot.logger.debug "Matched MCU #{mcu.name}"
+                # Get the files
+                robot.http("http://stmcufinder.com/API/getFiles.php")
+                    .header('Accept', 'application/json')
+                    .get() (err, response, body) ->
+                        if response.statusCode isnt 200 or err
+                            res.send "Unable to get files. #{err}"
+                            return
+
+                        data = JSON.parse body
+                        robot.logger.debug "Got #{data.Files.length} total files."
+                        mcuFile = if (documentType == "datasheet") then "Datasheet" else "Reference manual"
+                        for mFile in mcu.files
+                            for sFile in data.Files
+                                if mFile.file_id == sFile.id_file and sFile.type == mcuFile
+                                    res.reply "**#{sFile.type}** for **#{mcu.name}**: #{sFile.URL}\n(#{sFile.title})"
+            else
+                res.send "Error! Could not find requested MCU."
