@@ -30,6 +30,17 @@ hubot>> Reference manual for STM32F103RBTx: http://www.st.com/resource/en/refere
 
 https://www.npmjs.com/package/hubot-stm32
 
+## To-Do List
+- [ ] Support more types of manuals (errata sheets, programming manuals, ...)
+- [ ] Do not fetch MCUs every time
+- [ ] Do not show Searching... message
+- [ ] Show error when no file is found
+- [ ] Handle JSON errors
+- [ ] Functional testing
+- [ ] Do not return results for really small stripped names
+- [ ] If possible, support different adapter formatting
+- [ ] Create a hubot script that can fetch datasheets from electronic component search engines
+
 ## Disclaimer
 
 All trademarks belong to their respective owners. 'STM32' is a registered trademark

@@ -1,7 +1,7 @@
 {
   "name": "hubot-stm32",
   "description": "A hubot script that links documentation for STM32 microcontrollers",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "kongr45gpen <electrovesta@gmail.com>",
   "license": "MIT",
 
