@@ -27,7 +27,10 @@ module.exports = (robot) ->
   robot.respond /(datasheet|reference) (.*)/i, (res) ->
     documentType = res.match[1]
     wantedMcu = res.match[2].toLowerCase().replace /^\s+|\s+$/g, "" # trim/strip
-    res.reply "Searching..."
+    if robot.adapter != undefined and robot.adapter.client != undefined and robot.adapter.client.react != undefined
+        # If the adapter supports it, add an hourglass reaction to the message, to show that the
+        # request is begin processed
+        robot.adapter.client.react(res.message.id, 'hourglass')
 
     robot.http("http://stmcufinder.com/API/getMCUsForMCUFinderPC.php")
         .header('Accept', 'application/json')
@@ -58,6 +61,10 @@ module.exports = (robot) ->
                         if response.statusCode isnt 200 or err
                             res.send "Unable to get files. #{err}"
                             return
+
+                        if robot.adapter != undefined and robot.adapter.client != undefined and robot.adapter.client.unreact != undefined
+                            # Remove emoji, the request is over
+                            robot.adapter.client.unreact(res.message.id, 'hourglass')
 
                         data = JSON.parse body
                         robot.logger.debug "Got #{data.Files.length} total files."

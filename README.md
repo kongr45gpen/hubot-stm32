@@ -32,7 +32,7 @@ https://www.npmjs.com/package/hubot-stm32
 
 ## To-Do List
 - [ ] Do not fetch MCUs every time
-- [ ] Do not show Searching... message
+- [x] Do not show Searching... message
 - [ ] Show error when no file is found
 - [ ] Handle JSON errors
 - [ ] Functional testing
