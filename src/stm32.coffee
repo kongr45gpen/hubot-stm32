@@ -8,11 +8,11 @@
 #   None
 #
 # Commands:
-#   hubot datasheet <mcu> - Link to the datasheet of an STM32 microcontroller
+#   hubot stm datasheet <mcu> - Link to the datasheet of an STM32 microcontroller
 #   hubot reference <mcu> - Link to the reference manual of an STM32 microcontroller
 #
 # Examples:
-#   hubot datasheet stm32f103rb
+#   hubot stm datasheet stm32f103rb
 #   hubot reference l432
 #
 # Notes:
@@ -24,7 +24,7 @@
 
 module.exports = (robot) ->
 
-  robot.respond /(datasheet|reference) (.*)/i, (res) ->
+  robot.respond /(stm datasheet|reference) (.*)/i, (res) ->
     documentType = res.match[1]
     wantedMcu = res.match[2].toLowerCase().replace /^\s+|\s+$/g, "" # trim/strip
     if robot.adapter != undefined and robot.adapter.client != undefined and robot.adapter.client.react != undefined
@@ -68,7 +68,7 @@ module.exports = (robot) ->
 
                         data = JSON.parse body
                         robot.logger.debug "Got #{data.Files.length} total files."
-                        mcuFile = if (documentType == "datasheet") then "Datasheet" else "Reference manual"
+                        mcuFile = if (documentType == "stm datasheet") then "Datasheet" else "Reference manual"
                         for mFile in mcu.files
                             for sFile in data.Files
                                 if mFile.file_id == sFile.id_file and sFile.type == mcuFile

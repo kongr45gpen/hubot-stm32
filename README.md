@@ -38,7 +38,7 @@ https://www.npmjs.com/package/hubot-stm32
 - [ ] Functional testing
 - [ ] Do not return results for really small stripped names
 - [ ] If possible, support different adapter formatting
-- [ ] Create a hubot script that can fetch datasheets from electronic component search engines
+- [x] Create a hubot script that can fetch datasheets from electronic component search engines ([hubot-datasheets](https://github.com/kongr45gpen/hubot-datasheets))
 - [ ] Support more types of manuals (errata sheets, programming manuals, ...)
 - [ ] Functions for evaluation boards:
   - [ ] User Manual search
